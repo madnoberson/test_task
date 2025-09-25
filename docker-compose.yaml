@@ -1,0 +1,35 @@
+services:
+  app:
+    container_name: test_task.web_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+    ports:
+        - "8000:8000"
+    networks:
+      - test_task.network
+
+  postgres:
+    container_name: test_task.postgres
+    image: postgis/postgis:17-3.6-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=test_task
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d test_task"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    networks:
+      - test_task.network
+
+networks:
+  test_task.network:
+    driver: bridge
