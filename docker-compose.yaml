@@ -1,5 +1,5 @@
 services:
-  app:
+  web_api:
     container_name: test_task.web_api
     build:
       context: .
@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_HOST=postgres
     ports:
-        - "8000:8000"
+        - "127.0.0.1:8000:8000"
     networks:
       - test_task.network
 
